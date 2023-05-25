@@ -151,7 +151,9 @@ const DOM = {
                         <td class="description">${trans.description}</td>
                         <td class="${CSSclass}">${amount}</td>
                         <td class="date">${trans.date}</td>
-                        <td><img src="./assets/minus.svg" alt="Remover transação" class="remove-button" type="submit" method="POST"></td>
+                        <td>
+                            <img src="./assets/minus.svg" alt="Remover transação" class="remove-button" type="submit" method="POST">
+                        </td>
                 `
 
         return html
