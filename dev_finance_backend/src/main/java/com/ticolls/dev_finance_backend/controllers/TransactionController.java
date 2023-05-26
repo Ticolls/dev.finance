@@ -21,7 +21,7 @@ public class TransactionController {
 
     @PostMapping
     public void create(@RequestBody TransactionDTO body) {
-
+        service.create(body.getDescription(), body.getAmount(), body.getDate());
     }
 
     @GetMapping

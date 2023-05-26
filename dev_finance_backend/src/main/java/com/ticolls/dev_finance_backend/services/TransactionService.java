@@ -18,8 +18,8 @@ public class TransactionService {
     private TransactionRepository repository;
 
     @Transactional
-    public void createTransaction(Transaction transaction) {
-        repository.create(transaction);
+    public void create(String description, Double amount, String date) {
+        repository.create(description, amount, date);
     }
 
     public List<TransactionDTO> findAll() {

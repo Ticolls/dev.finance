@@ -15,12 +15,12 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                 amount,
                 date
             ) VALUES(
-                ":transaction.getDescription()",
-                :transaction.getAmount(),
-                ":transaction.getDate()"
+                ":description",
+                :amount,
+                ":date"
             )
                 """)
-    void create(Transaction transaction);
+    void create(String description, Double amount, String date);
 
     @Query(nativeQuery = true, value = """
             SELECT * FROM transactions
