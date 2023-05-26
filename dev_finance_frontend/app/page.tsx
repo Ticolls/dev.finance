@@ -1,15 +1,15 @@
+import './home.css'
 
 export default function Home() {
-
 
 
   return (
     <main className="container">
 
-      <section id="balance">
+      <section className="balance">
         <h2 className="sr-only">Balanço</h2>
 
-        <div className="card" id="income-card">
+        <div className="card">
           <h3>
             <span>
               Entradas
@@ -19,7 +19,7 @@ export default function Home() {
           <p>R$ 00,00</p>
         </div>
 
-        <div className="card" id="expense-card">
+        <div className="card">
           <h3>
             <span>
               Saídas
@@ -29,7 +29,7 @@ export default function Home() {
           <p>R$ 00,00</p>
         </div>
 
-        <div className="card total" id="total-card">
+        <div className="card total">
           <h3>
             <span>
               total
@@ -40,12 +40,12 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="transaction">
+      <section className="transaction">
 
         <a href="#" className="button new">+ Nova transação</a>
 
         <h2 className="sr-only">Transações</h2>
-        <table id="data-table">
+        <table className="data-table">
           <thead>
             <tr>
               <th>Descrição</th>

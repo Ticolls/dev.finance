@@ -33,7 +33,9 @@ body {
   border-width: 0;
 }
 
-.container {
-  width: min(90vw, 800px);
-  margin: auto;
+
+@media (min-width: 800px) {
+  html {
+    font-size: 87.5%;
+  }
 }
