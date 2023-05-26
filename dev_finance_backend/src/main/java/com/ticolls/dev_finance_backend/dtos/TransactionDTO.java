@@ -1,9 +1,17 @@
 package com.ticolls.dev_finance_backend.dtos;
 
-public class CreateTransactionDTO {
+import com.ticolls.dev_finance_backend.entities.Transaction;
+
+public class TransactionDTO {
     private String description;
     private Double amount;
     private String date;
+
+    public TransactionDTO(Transaction transaction) {
+        this.description = transaction.getDescription();
+        this.amount = transaction.getAmount();
+        this.date = transaction.getDate();
+    }
 
     public String getDescription() {
         return this.description;
