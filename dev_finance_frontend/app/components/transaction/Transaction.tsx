@@ -1,12 +1,18 @@
-export function Transaction() {
+interface TransactionProps {
+    description: String,
+    amount: number,
+    date: String
+}
+
+export function Transaction({ description, amount, date }: TransactionProps) {
 
     function removeTransaction() { }
 
     return (
         <tr>
-            <td className="description"></td>
-            <td className="${CSSclass}"></td>
-            <td className="date"></td>
+            <td className="description">{description}</td>
+            <td className="amount">{amount}</td>
+            <td className="date">{date}</td>
             <td>
                 <img src="./assets/minus.svg" alt="Remover transação" className="remove-button" onClick={removeTransaction} />
             </td>

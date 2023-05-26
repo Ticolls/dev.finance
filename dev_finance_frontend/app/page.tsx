@@ -1,7 +1,33 @@
+import { Transaction } from './components/transaction/Transaction';
 import './home.css'
 
-export default function Home() {
+type TransactionType = {
+  description: String,
+  amount: number,
+  date: String
+}
 
+async function getTransactions() {
+  const data = await fetch("http://localhost:8080/transaction")
+
+  return data.json();
+}
+
+export default async function Home() {
+
+  const transactions: TransactionType[] = await getTransactions()
+  console.log(transactions)
+
+  let income = 0.0, expense = 0.0, total = 0.0
+  for (let transaction of transactions) {
+    total = total + transaction.amount
+
+    if (transaction.amount >= 0) {
+      income = income + transaction.amount
+    } else {
+      expense = expense + transaction.amount
+    }
+  }
 
   return (
     <main className="container">
@@ -16,7 +42,7 @@ export default function Home() {
             </span>
             <img src="./assets/income.svg" alt="Imagem de entradas" />
           </h3>
-          <p>R$ 00,00</p>
+          <p>R$ {income}</p>
         </div>
 
         <div className="card">
@@ -26,7 +52,7 @@ export default function Home() {
             </span>
             <img src="./assets/expense.svg" alt="Imagem de Saídas" />
           </h3>
-          <p>R$ 00,00</p>
+          <p>R$ {expense}</p>
         </div>
 
         <div className="card total">
@@ -36,7 +62,7 @@ export default function Home() {
             </span>
             <img src="./assets/total.svg" alt="Imagem de total" />
           </h3>
-          <p>R$ 00,00</p>
+          <p>R$ {total}</p>
         </div>
       </section>
 
@@ -56,6 +82,12 @@ export default function Home() {
           </thead>
 
           <tbody>
+            {transactions.map(({ description, amount, date }: TransactionType) => {
+              return (
+                <Transaction description={description} amount={amount} date={date} />
+              )
+            })}
+
           </tbody>
         </table>
       </section>
