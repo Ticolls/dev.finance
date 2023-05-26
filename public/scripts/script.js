@@ -142,6 +142,7 @@ const DOM = {
         this.transactionsContainer.appendChild(tr)
     },
 
+
     innerHTMLTransaction(trans) {
         const CSSclass = trans.amount > 0 ? "income" : "expense"
 
