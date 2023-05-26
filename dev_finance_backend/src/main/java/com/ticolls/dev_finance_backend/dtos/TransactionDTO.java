@@ -7,6 +7,9 @@ public class TransactionDTO {
     private Double amount;
     private String date;
 
+    public TransactionDTO() {
+    }
+
     public TransactionDTO(Transaction transaction) {
         this.description = transaction.getDescription();
         this.amount = transaction.getAmount();

@@ -19,6 +19,9 @@ public class Transaction {
     private Double amount;
     private String date;
 
+    public Transaction() {
+    }
+
     public Transaction(String description, Double amount, String date) {
         this.description = description;
         this.amount = amount;

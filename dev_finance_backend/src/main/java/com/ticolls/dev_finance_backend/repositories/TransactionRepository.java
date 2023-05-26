@@ -3,21 +3,23 @@ package com.ticolls.dev_finance_backend.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.ticolls.dev_finance_backend.entities.Transaction;;
+import com.ticolls.dev_finance_backend.entities.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
+    @Modifying
     @Query(nativeQuery = true, value = """
             INSERT INTO transactions(
                 description,
                 amount,
                 date
             ) VALUES(
-                ":description",
+                :description,
                 :amount,
-                ":date"
+                :date
             )
                 """)
     void create(String description, Double amount, String date);
