@@ -34,3 +34,8 @@ tr td.expense {
 tr td.changes {
     display: flex;
 }
+
+.remove-button:hover {
+    cursor: pointer;
+    opacity: 1.2;
+}

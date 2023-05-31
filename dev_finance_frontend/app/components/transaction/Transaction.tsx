@@ -1,3 +1,7 @@
+"use client"
+
+import './transaction.css'
+
 interface TransactionProps {
     description: String,
     amount: number,
@@ -11,7 +15,7 @@ export function Transaction({ description, amount, date }: TransactionProps) {
     return (
         <tr>
             <td className="description">{description}</td>
-            <td className="amount">{amount}</td>
+            <td className={amount >= 0 ? "income" : "expense"}>{amount}</td>
             <td className="date">{date}</td>
             <td>
                 <img src="./assets/minus.svg" alt="Remover transação" className="remove-button" onClick={removeTransaction} />

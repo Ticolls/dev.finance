@@ -1,5 +1,6 @@
 import { Footer } from './components/footer/Footer'
 import { Header } from './components/header/Header'
+import { ModalContextProvider } from './contexts/ModalContext'
 import './globals.css'
 
 export default function RootLayout({
@@ -9,11 +10,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <Header />
-        {children}
-        <Footer />
-      </body>
+      <ModalContextProvider>
+        <body>
+          <Header />
+          {children}
+          <Footer />
+        </body>
+      </ModalContextProvider>
     </html>
   )
 }
