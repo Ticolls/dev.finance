@@ -29,13 +29,14 @@ table thead th {
     text-align: left;
 }
 
-a {
+.button.new {
     color: var(--green);
     text-decoration: none;
 }
 
-a:hover {
+.button.new:hover {
     color: var(--light-green);
+    cursor: pointer;
 }
 
 .ancors {

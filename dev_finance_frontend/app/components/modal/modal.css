@@ -80,6 +80,7 @@
 
 .save-button:hover {
     background: var(--light-green);
+    color: white;
 }
 
 
@@ -99,4 +100,5 @@
 
 .button.cancel:hover {
     opacity: 1;
+    cursor: pointer;
 }
