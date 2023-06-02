@@ -1,16 +1,20 @@
 "use client"
 
+import { Key } from 'react'
 import './transaction.css'
 
 interface TransactionProps {
+    id: Key,
     description: String,
     amount: number,
-    date: String
+    date: String,
 }
 
-export function Transaction({ description, amount, date }: TransactionProps) {
+export function Transaction({ id, description, amount, date }: TransactionProps) {
 
     function removeTransaction() { }
+
+    console.log(id)
 
     return (
         <tr>

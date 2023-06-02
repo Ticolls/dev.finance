@@ -1,4 +1,4 @@
-package com.ticolls.dslist.config;
+package com.ticolls.dev_finance_backend.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

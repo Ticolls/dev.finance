@@ -3,6 +3,7 @@ package com.ticolls.dev_finance_backend.dtos;
 import com.ticolls.dev_finance_backend.entities.Transaction;
 
 public class TransactionDTO {
+    private Long id;
     private String description;
     private Double amount;
     private String date;
@@ -11,9 +12,18 @@ public class TransactionDTO {
     }
 
     public TransactionDTO(Transaction transaction) {
+        this.id = transaction.getId();
         this.description = transaction.getDescription();
         this.amount = transaction.getAmount();
         this.date = transaction.getDate();
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getDescription() {

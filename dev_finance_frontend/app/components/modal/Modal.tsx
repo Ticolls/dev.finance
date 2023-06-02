@@ -32,6 +32,8 @@ export function Modal() {
             },
             body: JSON.stringify({ description, amount, date }),
         })
+
+        setModalStatus(false)
     }
 
     return (

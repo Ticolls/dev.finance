@@ -31,12 +31,16 @@ export function Table({ transactions }: TableProps) {
                     </tr>
                 </thead>
 
-                <tbody>
-                    {transactions.map(({ description, amount, date }: TransactionType) => {
-                        return (
-                            <Transaction description={description} amount={amount} date={date} />
-                        )
-                    })}
+                <tbody key="transactions">
+                    {transactions.map((transaction: TransactionType) =>
+                        <Transaction
+                            id={transaction.id}
+                            description={transaction.description}
+                            amount={transaction.amount}
+                            date={transaction.date}
+                            key={transaction.id}
+                        />
+                    )}
 
                 </tbody>
             </table>

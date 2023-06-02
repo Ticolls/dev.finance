@@ -1,51 +1,64 @@
+'use client'
+
+import { useEffect, useState } from 'react';
 import { Table } from './components/table/Table';
 import './home.css'
+import { useModal } from './hooks/useModal';
 
 export type TransactionType = {
+  id: number,
   description: String,
   amount: number,
   date: String
 }
 
-const example = [
-  {
-    description: "teste 1",
-    amount: 500.00,
-    date: "25/06/2023"
-  },
-  {
-    description: "teste 2",
-    amount: -500.00,
-    date: "25/06/2023"
-  },
-  {
-    description: "teste 3",
-    amount: 120.00,
-    date: "25/06/2023"
+
+export default function Home() {
+
+  const { modalStatus } = useModal()
+
+  const [transactions, setTransactions] = useState<TransactionType[]>([])
+  const [income, setIncome] = useState<number>(0)
+  const [expense, setExpense] = useState<number>(0)
+  const [total, setTotal] = useState<number>(0)
+
+  async function handleTransactions() {
+    const data = await fetch("http://localhost:8080/transaction", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+
+    setTransactions(await data.json())
   }
-]
 
-async function getTransactions() {
-  const data = await fetch("http://localhost:8080/transaction")
-  return data.json();
-}
+  function handleCards() {
+    let income = 0.0, expense = 0.0, total = 0.0
 
-export default async function Home() {
+    for (let transaction of transactions) {
+      total = total + transaction.amount
 
-  const transactions: TransactionType[] = await getTransactions()
-  console.log(transactions)
-
-  let income = 0.0, expense = 0.0, total = 0.0
-
-  for (let transaction of example) {
-    total = total + transaction.amount
-
-    if (transaction.amount >= 0) {
-      income = income + transaction.amount
-    } else {
-      expense = expense + transaction.amount
+      if (transaction.amount >= 0) {
+        income = income + transaction.amount
+      } else {
+        expense = expense + transaction.amount
+      }
     }
+
+    setIncome(income)
+    setExpense(expense)
+    setTotal(total)
   }
+
+  useEffect(() => {
+    handleTransactions()
+  }, [modalStatus == false])
+
+  useEffect(() => {
+    handleCards()
+  }, [transactions])
+
 
   return (
     <main className="container">
@@ -84,7 +97,7 @@ export default async function Home() {
         </div>
       </section>
 
-      <Table transactions={example} />
+      <Table transactions={transactions} />
 
     </main>
   )
