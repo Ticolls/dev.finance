@@ -3,35 +3,15 @@
 import { useEffect, useState } from 'react';
 import { Table } from './components/table/Table';
 import './home.css'
-import { useModal } from './hooks/useModal';
-
-export type TransactionType = {
-  id: number,
-  description: String,
-  amount: number,
-  date: String
-}
-
+import { useTransactions } from './hooks/useTransactions';
 
 export default function Home() {
 
-  const { modalStatus } = useModal()
+  const { transactions, loadTransactions, load } = useTransactions()
 
-  const [transactions, setTransactions] = useState<TransactionType[]>([])
   const [income, setIncome] = useState<number>(0)
   const [expense, setExpense] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
-
-  async function handleTransactions() {
-    const data = await fetch("http://localhost:8080/transaction", {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-
-    setTransactions(await data.json())
-  }
 
   function handleCards() {
     let income = 0.0, expense = 0.0, total = 0.0
@@ -49,16 +29,17 @@ export default function Home() {
     setIncome(income)
     setExpense(expense)
     setTotal(total)
+
+    console.log("atualizou")
   }
 
   useEffect(() => {
-    handleTransactions()
-  }, [modalStatus == false])
+    loadTransactions()
+  }, [load])
 
   useEffect(() => {
     handleCards()
-  }, [transactions])
-
+  }, [transactions.length])
 
   return (
     <main className="container">

@@ -1,10 +1,10 @@
 'use client'
 
-import { TransactionType } from '@/app/page'
 import './table.css'
 import { Transaction } from '../transaction/Transaction'
 import { Modal } from '../modal/Modal'
 import { useModal } from '@/app/hooks/useModal'
+import { TransactionType } from '@/app/contexts/TransactionsContext'
 
 interface TableProps {
     transactions: TransactionType[]
@@ -13,7 +13,6 @@ interface TableProps {
 export function Table({ transactions }: TableProps) {
 
     const { modalStatus, setModalStatus } = useModal()
-
 
     return (
         <section className="transaction">

@@ -10,6 +10,11 @@ import com.ticolls.dev_finance_backend.entities.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
+    @Query(nativeQuery = true, value = """
+            SELECT * FROM transactions
+            """)
+    List<Transaction> findAll();
+
     @Modifying
     @Query(nativeQuery = true, value = """
             INSERT INTO transactions(
@@ -24,8 +29,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                 """)
     void create(String description, Double amount, String date);
 
+    @Modifying
     @Query(nativeQuery = true, value = """
-            SELECT * FROM transactions
+            DELETE FROM transactions WHERE id = :id
             """)
-    List<Transaction> findAll();
+    void delete(long id);
 }

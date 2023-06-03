@@ -3,14 +3,16 @@
 import { useModal } from '@/app/hooks/useModal'
 import './modal.css'
 import { FormEvent, useState } from 'react'
+import { useTransactions } from '@/app/hooks/useTransactions'
 
 export function Modal() {
 
     const { setModalStatus } = useModal()
+    const { createTransaction } = useTransactions()
 
-    const [description, setDescription] = useState<String | null>()
-    const [amount, setamount] = useState<Number | null>()
-    const [date, setDate] = useState<String | null>()
+    const [description, setDescription] = useState<String>("")
+    const [amount, setamount] = useState<number>(0)
+    const [date, setDate] = useState<String>("")
 
     function handleDescription(e: FormEvent<HTMLInputElement>) {
         setDescription(e.currentTarget.value)
@@ -25,13 +27,7 @@ export function Modal() {
     }
 
     async function handleSubmitForm() {
-        const res = await fetch('http://localhost:8080/transaction', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ description, amount, date }),
-        })
+        createTransaction({ description, amount, date })
 
         setModalStatus(false)
     }

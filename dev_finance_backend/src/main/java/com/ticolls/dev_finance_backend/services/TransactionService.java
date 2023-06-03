@@ -9,7 +9,7 @@ import com.ticolls.dev_finance_backend.dtos.TransactionDTO;
 import com.ticolls.dev_finance_backend.entities.Transaction;
 import com.ticolls.dev_finance_backend.repositories.TransactionRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TransactionService {
@@ -22,10 +22,16 @@ public class TransactionService {
         repository.create(description, amount, date);
     }
 
+    @Transactional
     public List<TransactionDTO> findAll() {
         List<Transaction> data = repository.findAll();
         List<TransactionDTO> dtos = data.stream().map(TransactionDTO::new).toList();
 
         return dtos;
+    }
+
+    @Transactional
+    public void delete(long id) {
+        repository.delete(id);
     }
 }
