@@ -30,7 +30,6 @@ export default function Home() {
     setExpense(expense)
     setTotal(total)
 
-    console.log("atualizou")
   }
 
   useEffect(() => {

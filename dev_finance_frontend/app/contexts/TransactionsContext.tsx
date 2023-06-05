@@ -46,7 +46,12 @@ export function TransactionsContextProvider(props: TransactionsContextProviderPr
             body: JSON.stringify(transaction),
         })
 
-        setLoad(!load)
+        if (res.ok) {
+            setLoad(!load)
+        } else {
+            console.log(await res.json())
+        }
+
     }
 
     async function loadTransactions() {
@@ -67,6 +72,12 @@ export function TransactionsContextProvider(props: TransactionsContextProviderPr
                 'Content-Type': 'application/json',
             }
         })
+
+        if (res.ok) {
+            setLoad(!load)
+        } else {
+            console.log(res)
+        }
 
         setLoad(!load)
     }

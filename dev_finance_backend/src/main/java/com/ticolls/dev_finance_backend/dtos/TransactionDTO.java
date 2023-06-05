@@ -2,10 +2,15 @@ package com.ticolls.dev_finance_backend.dtos;
 
 import com.ticolls.dev_finance_backend.entities.Transaction;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class TransactionDTO {
     private Long id;
+
     private String description;
+
     private Double amount;
+    @NotBlank
     private String date;
 
     public TransactionDTO() {

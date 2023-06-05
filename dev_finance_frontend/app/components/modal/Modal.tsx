@@ -27,6 +27,7 @@ export function Modal() {
     }
 
     async function handleSubmitForm() {
+
         createTransaction({ description, amount, date })
 
         setModalStatus(false)
