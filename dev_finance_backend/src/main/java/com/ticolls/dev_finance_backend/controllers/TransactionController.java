@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ticolls.dev_finance_backend.dtos.TransactionDTO;
+import com.ticolls.dev_finance_backend.dtos.RequestTransactionDTO;
+import com.ticolls.dev_finance_backend.dtos.ResponseTransactionDTO;
+import com.ticolls.dev_finance_backend.entities.Transaction;
 import com.ticolls.dev_finance_backend.services.TransactionService;
 
 import jakarta.validation.ConstraintViolationException;
@@ -32,20 +34,23 @@ public class TransactionController {
     private TransactionService service;
 
     @PostMapping
-    public ResponseEntity<String> create(@Valid @RequestBody TransactionDTO body) {
-        service.create(body.getDescription(), body.getAmount(), body.getDate());
+    public ResponseEntity<String> create(@Valid @RequestBody RequestTransactionDTO transactionDTO) {
 
-        if (body.getAmount() == 0) {
+        if (transactionDTO.getAmount() == 0) {
             return new ResponseEntity<>("not valid due to validation error: valor deve ser diferente de 0",
                     HttpStatus.BAD_REQUEST);
         }
+
+        Transaction transaction = new Transaction(transactionDTO);
+
+        service.create(transaction);
 
         return ResponseEntity.ok("Transação criada");
     }
 
     @GetMapping
-    public List<TransactionDTO> findAll() {
-        List<TransactionDTO> result = service.findAll();
+    public List<ResponseTransactionDTO> findAll() {
+        List<ResponseTransactionDTO> result = service.findAll();
 
         return result;
     }

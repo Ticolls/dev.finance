@@ -1,6 +1,6 @@
 package com.ticolls.dev_finance_backend.entities;
 
-import com.ticolls.dev_finance_backend.dtos.TransactionDTO;
+import com.ticolls.dev_finance_backend.dtos.RequestTransactionDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,10 +28,10 @@ public class Transaction {
         this.date = date;
     }
 
-    public Transaction(TransactionDTO createTransactionDTO) {
-        this.description = createTransactionDTO.getDescription();
-        this.amount = createTransactionDTO.getAmount();
-        this.date = createTransactionDTO.getDate();
+    public Transaction(RequestTransactionDTO transactionDTO) {
+        this.description = transactionDTO.getDescription();
+        this.amount = transactionDTO.getAmount();
+        this.date = transactionDTO.getDate();
     }
 
     public Long getId() {

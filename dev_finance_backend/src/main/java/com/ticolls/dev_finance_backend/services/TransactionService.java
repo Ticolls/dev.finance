@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ticolls.dev_finance_backend.dtos.TransactionDTO;
+import com.ticolls.dev_finance_backend.dtos.ResponseTransactionDTO;
 import com.ticolls.dev_finance_backend.entities.Transaction;
 import com.ticolls.dev_finance_backend.repositories.TransactionRepository;
 
@@ -18,14 +18,14 @@ public class TransactionService {
     private TransactionRepository repository;
 
     @Transactional
-    public void create(String description, Double amount, String date) {
-        repository.create(description, amount, date);
+    public void create(Transaction transaction) {
+        repository.create(transaction.getDescription(), transaction.getAmount(), transaction.getDate());
     }
 
     @Transactional
-    public List<TransactionDTO> findAll() {
+    public List<ResponseTransactionDTO> findAll() {
         List<Transaction> data = repository.findAll();
-        List<TransactionDTO> dtos = data.stream().map(TransactionDTO::new).toList();
+        List<ResponseTransactionDTO> dtos = data.stream().map(ResponseTransactionDTO::new).toList();
 
         return dtos;
     }
