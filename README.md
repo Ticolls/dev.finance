@@ -1,6 +1,10 @@
 # dev.finance
 Projeto maratona-1 discover da RocketSeat (dev.finance) + implementação do back-end e banco de dados sqlite.
 
+<div align="center">
+  <img src="https://user-images.githubusercontent.com/65607009/159952808-4d5f7739-38a4-4dc8-818f-1654cd28c617.png" width="700"/>
+</div>
+
 ## description
 - A aplicação é um organizador de finanças. Assim, ela pode adicionar novas transações, as quais contém descrição, valor e data, na sua tabela e atualizar, em tempo real, 3 cards que apresentam o total dos valores de entrada (valores positivos/ganhos), o total dos valores de saída (valores negativos/perdas) e o total do balanço (entradas - saídas).
   
