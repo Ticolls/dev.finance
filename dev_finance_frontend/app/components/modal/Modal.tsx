@@ -27,10 +27,13 @@ export function Modal() {
     }
 
     async function handleSubmitForm() {
-
-        createTransaction({ description, amount, date })
-
-        setModalStatus(false)
+        try {
+            await createTransaction({ description, amount, date })
+            setModalStatus(false)
+        }
+        catch (e) {
+            console.error(e)
+        }
     }
 
     return (

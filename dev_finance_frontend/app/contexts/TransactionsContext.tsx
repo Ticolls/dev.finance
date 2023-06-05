@@ -46,11 +46,11 @@ export function TransactionsContextProvider(props: TransactionsContextProviderPr
             body: JSON.stringify(transaction),
         })
 
-        if (res.ok) {
-            setLoad(!load)
-        } else {
-            console.log(await res.json())
+        if (!res.ok) {
+            throw new Error("Erro na criação da transação")
         }
+
+        setLoad(!load)
 
     }
 
@@ -73,10 +73,8 @@ export function TransactionsContextProvider(props: TransactionsContextProviderPr
             }
         })
 
-        if (res.ok) {
-            setLoad(!load)
-        } else {
-            console.log(res)
+        if (!res.ok) {
+            throw new Error("Erro na deleção da transação " + id)
         }
 
         setLoad(!load)

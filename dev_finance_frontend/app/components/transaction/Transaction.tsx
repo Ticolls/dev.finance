@@ -18,13 +18,21 @@ export function Transaction({ id, description, amount, date }: TransactionProps)
 
     const { formatDate } = useTools()
 
+    async function handleDeleteTransaction() {
+        try {
+            await removeTransaction(id)
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
     return (
         <tr>
             <td className="description">{description}</td>
             <td className={amount >= 0 ? "income" : "expense"}>{amount.toFixed(2)}</td>
             <td className="date">{formatDate(date)}</td>
             <td>
-                <img src="./assets/minus.svg" alt="Remover transação" className="remove-button" onClick={() => removeTransaction(id)} />
+                <img src="./assets/minus.svg" alt="Remover transação" className="remove-button" onClick={handleDeleteTransaction} />
             </td>
         </tr>
     )
