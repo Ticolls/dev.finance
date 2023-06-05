@@ -14,6 +14,9 @@ export function Modal() {
     const [amount, setamount] = useState<number>(0)
     const [date, setDate] = useState<String>("")
 
+    const [amountError, setAmountError] = useState<boolean>(false)
+    const [dateError, setDateError] = useState<boolean>(false)
+
     function handleDescription(e: FormEvent<HTMLInputElement>) {
         setDescription(e.currentTarget.value)
     }
@@ -26,14 +29,35 @@ export function Modal() {
         setDate(e.currentTarget.value)
     }
 
+    function verififyInput(): boolean {
+        if (amount == 0) {
+            setAmountError(true)
+        } else {
+            setAmountError(false)
+        }
+
+        if (date.trim() == "") {
+            setDateError(true)
+        } else {
+            setDateError(false)
+        }
+
+
+        return amount != 0 && date.trim() != ""
+    }
+
     async function handleSubmitForm() {
-        try {
-            await createTransaction({ description, amount, date })
-            setModalStatus(false)
+        if (verififyInput()) {
+            try {
+                await createTransaction({ description, amount, date })
+                setModalStatus(false)
+            }
+            catch (e) {
+                console.error(e)
+            }
         }
-        catch (e) {
-            console.error(e)
-        }
+
+        return
     }
 
     return (
@@ -49,14 +73,22 @@ export function Modal() {
 
                         <div className="input-group">
                             <label className="sr-only">Valor</label>
-                            <input type="number" step="0.01" className="amount" name="amount" placeholder="0,00" onChange={handleAmount} />
-                            <small className="help">Use o sinal - (negativo) para despesas
-                                e , (vírgula) para casas decimais</small>
+                            <input type="number" step="0.01" className={`amount ${amountError ? "error" : ""}`} name="amount" placeholder="0,00" onChange={handleAmount} />
+                            {amountError ? (
+                                <small className='error-msg'>Campo obrigatório</small>
+                            ) :
+                                <small className="help">
+                                    Use o sinal - (negativo) para despesas e , (vírgula) para casas decimais
+                                </small>}
+
                         </div>
 
                         <div className="input-group">
                             <label className="sr-only">Data</label>
-                            <input type="date" className="date" name="date" placeholder="Descrição" onChange={handleDate} />
+                            <input type="date" className={`date ${dateError ? "error" : ""}`} name="date" placeholder="Descrição" onChange={handleDate} />
+                            {dateError ? (
+                                <small className='error-msg'>Campo obrigatório</small>
+                            ) : null}
                         </div>
 
                         <div className="input-group actions">

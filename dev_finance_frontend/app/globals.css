@@ -33,15 +33,6 @@ body {
   border-width: 0;
 }
 
-input {
-  border: none;
-  border-radius: 0.2rem;
-
-  padding: 0.8rem;
-
-  width: 100%;
-}
-
 
 @media (min-width: 800px) {
   html {

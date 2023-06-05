@@ -21,17 +21,30 @@
     background: #f0f2f5;
     padding: 2.4rem;
 
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
     position: relative;
     z-index: 1;
 }
 
 /*================== Form ======================*/
 .form {
-    max-width: 500px;
+    width: 500px;
 }
 
 .form h2 {
     margin-top: 0;
+}
+
+input {
+    border: none;
+    border-radius: 0.2rem;
+
+    padding: 0.8rem;
+
+    width: 100%;
 }
 
 .input-group {
@@ -53,8 +66,7 @@
     width: 48%;
 }
 
-.amount.no-value,
-.date.no-value {
+.input-group input.error {
     border: 2px solid var(--red);
 }
 
