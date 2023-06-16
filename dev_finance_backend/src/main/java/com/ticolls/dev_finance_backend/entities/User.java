@@ -1,6 +1,6 @@
 package com.ticolls.dev_finance_backend.entities;
 
-import com.ticolls.dev_finance_backend.dtos.RequestUserDTO;
+import com.ticolls.dev_finance_backend.dtos.SigninUserDTO;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
     private String email;
@@ -22,14 +22,7 @@ public class User {
     public User() {
     }
 
-    public User(long id, String name, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(RequestUserDTO userDTO) {
+    public User(SigninUserDTO userDTO) {
         this.name = userDTO.getName();
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();

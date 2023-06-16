@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ticolls.dev_finance_backend.dtos.LoginUserDTO;
-import com.ticolls.dev_finance_backend.dtos.SiginUserDTO;
+import com.ticolls.dev_finance_backend.dtos.SigninUserDTO;
+import com.ticolls.dev_finance_backend.entities.User;
 import com.ticolls.dev_finance_backend.services.UserService;
 
 @RestController
@@ -18,14 +19,18 @@ public class UserController {
     @Autowired
     UserService service;
 
-    @PostMapping("/sigin")
-    public ResponseEntity<String> sigin(@RequestBody SiginUserDTO user) {
+    @PostMapping("/signin")
+    public ResponseEntity<String> sigin(@RequestBody SigninUserDTO userDTO) {
+        
+        User user = new User(userDTO);
+
+        service.sigin(user);
 
         return ResponseEntity.ok("");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginUserDTO user) {
+    public ResponseEntity<String> login(@RequestBody LoginUserDTO userDTO) {
 
         return ResponseEntity.ok("");
     }

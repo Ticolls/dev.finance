@@ -12,10 +12,15 @@ export default function Sigin() {
     async function submitForm(e: FormEvent) {
         e.preventDefault();
 
-        console.log(name);
-        console.log(email);
-        console.log(password);
-        console.log(confirmPassword);
+        const res = await fetch("http://localhost:8080/user/signin", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, password }),
+        });
+
+        console.log(res);
     }
 
     return (

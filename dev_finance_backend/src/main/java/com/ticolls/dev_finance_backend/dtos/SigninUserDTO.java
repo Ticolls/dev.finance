@@ -1,13 +1,13 @@
 package com.ticolls.dev_finance_backend.dtos;
 
-public class SiginUserDTO {
+public class SigninUserDTO {
 
     private String email;
     private String name;
     private String password;
     private String confirmPassword;
 
-    public SiginUserDTO() {
+    public SigninUserDTO() {
     }
 
     public String getEmail() {
