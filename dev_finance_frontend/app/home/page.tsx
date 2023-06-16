@@ -1,9 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Table } from './components/table/Table';
+import { Table } from '../components/table/Table';
 import './home.css'
-import { useTransactions } from './hooks/useTransactions';
+import { useTransactions } from '../hooks/useTransactions';
 
 export default function Home() {
 

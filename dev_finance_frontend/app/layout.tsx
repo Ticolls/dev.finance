@@ -4,7 +4,7 @@ import { ModalContextProvider } from './contexts/ModalContext'
 import { TransactionsContextProvider } from './contexts/TransactionsContext'
 import './globals.css'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function HomeLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <TransactionsContextProvider>
