@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ticolls.dev_finance_backend.dtos.RequestTransactionDTO;
 import com.ticolls.dev_finance_backend.dtos.ResponseTransactionDTO;
-import com.ticolls.dev_finance_backend.entities.Transaction;
 import com.ticolls.dev_finance_backend.services.TransactionService;
 
 import jakarta.validation.ConstraintViolationException;
@@ -41,10 +40,8 @@ public class TransactionController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        Transaction transaction = new Transaction(transactionDTO);
-
-        service.create(transaction);
-
+        service.create(transactionDTO.getDescription(), transactionDTO.getAmount(), transactionDTO.getDate(),
+                transactionDTO.getUserId());
         return ResponseEntity.ok("Transação criada");
     }
 

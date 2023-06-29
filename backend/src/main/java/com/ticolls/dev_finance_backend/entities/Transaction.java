@@ -1,11 +1,11 @@
 package com.ticolls.dev_finance_backend.entities;
 
-import com.ticolls.dev_finance_backend.dtos.RequestTransactionDTO;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,19 +19,18 @@ public class Transaction {
     private Double amount;
     private String date;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
+    private User user;
+
     public Transaction() {
     }
 
-    public Transaction(String description, Double amount, String date) {
+    public Transaction(String description, Double amount, String date, User user) {
         this.description = description;
         this.amount = amount;
         this.date = date;
-    }
-
-    public Transaction(RequestTransactionDTO transactionDTO) {
-        this.description = transactionDTO.getDescription();
-        this.amount = transactionDTO.getAmount();
-        this.date = transactionDTO.getDate();
+        this.user = user;
     }
 
     public Long getId() {

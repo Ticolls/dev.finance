@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.ticolls.dev_finance_backend.dtos.ResponseTransactionDTO;
 import com.ticolls.dev_finance_backend.entities.Transaction;
+import com.ticolls.dev_finance_backend.entities.User;
 import com.ticolls.dev_finance_backend.repositories.TransactionRepository;
+import com.ticolls.dev_finance_backend.repositories.UserRepository;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,16 +17,25 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransactionService {
 
     @Autowired
-    private TransactionRepository repository;
+    private TransactionRepository transactionRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
-    public void create(Transaction transaction) {
-        repository.create(transaction.getDescription(), transaction.getAmount(), transaction.getDate());
+    public void create(String description, Double amount, String date, Long userId) {
+
+        User user = userRepository.findById(userId).get();
+
+        Transaction transaction = new Transaction(description, amount, date, user);
+
+        transactionRepository.save(transaction);
     }
 
     @Transactional
     public List<ResponseTransactionDTO> findAll() {
-        List<Transaction> data = repository.findAll();
+        List<Transaction> data = transactionRepository.findAll();
+
         List<ResponseTransactionDTO> dtos = data.stream().map(ResponseTransactionDTO::new).toList();
 
         return dtos;
@@ -32,6 +43,6 @@ public class TransactionService {
 
     @Transactional
     public void delete(long id) {
-        repository.delete(id);
+        transactionRepository.deleteById(id);
     }
 }
