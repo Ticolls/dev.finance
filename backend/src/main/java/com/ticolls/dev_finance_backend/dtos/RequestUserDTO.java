@@ -2,8 +2,10 @@ package com.ticolls.dev_finance_backend.dtos;
 
 public class RequestUserDTO {
 
-    private String email;
     private String name;
+
+    private String email;
+
     private String password;
 
     public RequestUserDTO() {

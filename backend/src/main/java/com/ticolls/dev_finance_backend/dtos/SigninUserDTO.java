@@ -1,11 +1,19 @@
 package com.ticolls.dev_finance_backend.dtos;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class SigninUserDTO {
 
-    private String email;
+    @NotBlank
     private String name;
+
+    @Email
+    private String email;
+
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$")
     private String password;
-    private String confirmPassword;
 
     public SigninUserDTO() {
     }
@@ -32,14 +40,6 @@ public class SigninUserDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getConfirmPassword() {
-        return this.confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
     }
 
 }

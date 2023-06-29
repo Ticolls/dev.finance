@@ -16,11 +16,13 @@ export default function Sigin() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify({ name, email, password }),
         });
 
-        console.log(res);
+        console.log(await res.text())
+
     }
 
     return (
