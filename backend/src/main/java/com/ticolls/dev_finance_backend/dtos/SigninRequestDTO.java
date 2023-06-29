@@ -1,30 +1,21 @@
 package com.ticolls.dev_finance_backend.dtos;
 
-import com.ticolls.dev_finance_backend.entities.User;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
-public class ResponseUserDTO {
+public class SigninRequestDTO {
 
-    private Long id;
-    private String email;
+    @NotBlank
     private String name;
+
+    @Email
+    private String email;
+
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$")
     private String password;
 
-    public ResponseUserDTO() {
-    }
-
-    public ResponseUserDTO(User user) {
-        this.id = user.getId();
-        this.email = user.getEmail();
-        this.name = user.getEmail();
-        this.password = user.getPassword();
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public SigninRequestDTO() {
     }
 
     public String getEmail() {

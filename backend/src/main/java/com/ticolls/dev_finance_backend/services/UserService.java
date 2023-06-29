@@ -1,7 +1,10 @@
 package com.ticolls.dev_finance_backend.services;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ticolls.dev_finance_backend.entities.User;
@@ -10,31 +13,29 @@ import com.ticolls.dev_finance_backend.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
-    UserRepository repository;
+    private UserRepository repository;
 
     @Transactional
-    public void sigin(User user) {
-        List<User> users = repository.findAll();
+    public void save(String name, String email, String password) {
 
-        boolean userExist = false;
-
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getEmail().equals(user.getEmail())) {
-                userExist = true;
-            }
-        }
-
-        if (userExist) {
+        if (this.repository.findByEmail(email) != null) {
             throw new Error("Email já cadastrado");
         } else {
-            repository.create(user.getName(), user.getEmail(), user.getPassword());
+
+            String encryptedPassword = new BCryptPasswordEncoder().encode(password);
+
+            User newUser = new User(name, email, encryptedPassword);
+
+            repository.save(newUser);
         }
-
     }
 
-    public void login() {
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return repository.findByEmail(email);
     }
+
 }

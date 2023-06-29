@@ -1,11 +1,11 @@
 package com.ticolls.dev_finance_backend.dtos;
 
-public class LoginUserDTO {
+public class LoginRequestDTO {
 
     private String email;
     private String password;
 
-    public LoginUserDTO() {
+    public LoginRequestDTO() {
     }
 
     public String getEmail() {

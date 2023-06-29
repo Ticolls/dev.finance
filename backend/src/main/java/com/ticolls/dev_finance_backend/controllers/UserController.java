@@ -8,27 +8,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ticolls.dev_finance_backend.dtos.LoginUserDTO;
-import com.ticolls.dev_finance_backend.dtos.SigninUserDTO;
-import com.ticolls.dev_finance_backend.entities.User;
+import com.ticolls.dev_finance_backend.dtos.LoginRequestDTO;
+import com.ticolls.dev_finance_backend.dtos.LoginResponseDTO;
+import com.ticolls.dev_finance_backend.dtos.SigninRequestDTO;
+import com.ticolls.dev_finance_backend.services.AuthService;
 import com.ticolls.dev_finance_backend.services.UserService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("auth")
 public class UserController {
 
     @Autowired
-    UserService service;
+    private UserService userService;
+
+    @Autowired
+    private AuthService authService;
 
     @PostMapping("/signin")
-    public ResponseEntity<String> sigin(@Valid @RequestBody SigninUserDTO userDTO) {
-
-        User user = new User(userDTO);
-
+    public ResponseEntity<String> signin(@Valid @RequestBody SigninRequestDTO userDTO) {
         try {
-            service.sigin(user);
+            userService.save(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword());
             return ResponseEntity.ok("Usuário criado com sucesso!");
         } catch (Error e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -37,8 +38,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginUserDTO userDTO) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO userDTO) {
 
-        return ResponseEntity.ok("");
+        String token = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
+        return ResponseEntity.ok(new LoginResponseDTO(token));
+
     }
 }
