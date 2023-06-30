@@ -7,20 +7,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ticolls.dev_finance_backend.dtos.RequestTransactionDTO;
 import com.ticolls.dev_finance_backend.dtos.ResponseTransactionDTO;
 import com.ticolls.dev_finance_backend.services.TransactionService;
 
-import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 
@@ -30,39 +28,34 @@ import jakarta.validation.constraints.Positive;
 public class TransactionController {
 
     @Autowired
-    private TransactionService service;
+    private TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<String> create(@Valid @RequestBody RequestTransactionDTO transactionDTO) {
+    public ResponseEntity<String> create(@Valid @RequestBody RequestTransactionDTO transactionDTO,
+            @RequestHeader(name = "Authorization") String token) {
 
         if (transactionDTO.getAmount() == 0) {
             return new ResponseEntity<>("not valid due to validation error: valor deve ser diferente de 0",
                     HttpStatus.BAD_REQUEST);
         }
 
-        service.create(transactionDTO.getDescription(), transactionDTO.getAmount(), transactionDTO.getDate(),
-                transactionDTO.getUserId());
+        transactionService.create(transactionDTO.getDescription(), transactionDTO.getAmount(), transactionDTO.getDate(),
+                token);
         return ResponseEntity.ok("Transação criada");
     }
 
     @GetMapping
-    public List<ResponseTransactionDTO> findAll() {
-        List<ResponseTransactionDTO> result = service.findAll();
+    public List<ResponseTransactionDTO> findAll(@RequestHeader(name = "Authorization") String token) {
 
+        List<ResponseTransactionDTO> result = transactionService.findAll(token);
         return result;
     }
 
     @DeleteMapping("/{id}")
     public String delete(@Positive @PathVariable long id) {
         System.out.println(id);
-        service.delete(id);
+        transactionService.delete(id);
 
         return "ta batendo";
-    }
-
-    @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
-        return new ResponseEntity<>("not valid due to validation error: " + e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

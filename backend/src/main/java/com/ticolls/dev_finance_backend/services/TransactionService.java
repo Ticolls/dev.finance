@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ticolls.dev_finance_backend.dtos.ResponseTransactionDTO;
 import com.ticolls.dev_finance_backend.entities.Transaction;
 import com.ticolls.dev_finance_backend.entities.User;
+import com.ticolls.dev_finance_backend.infra.security.TokenService;
 import com.ticolls.dev_finance_backend.repositories.TransactionRepository;
 import com.ticolls.dev_finance_backend.repositories.UserRepository;
 
@@ -22,10 +23,15 @@ public class TransactionService {
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional
-    public void create(String description, Double amount, String date, Long userId) {
+    @Autowired
+    private TokenService tokenService;
 
-        User user = userRepository.findById(userId).get();
+    @Transactional
+    public void create(String description, Double amount, String date, String token) {
+
+        String email = tokenService.validateToken(token);
+
+        User user = userRepository.findByEmail(email);
 
         Transaction transaction = new Transaction(description, amount, date, user);
 
@@ -33,8 +39,13 @@ public class TransactionService {
     }
 
     @Transactional
-    public List<ResponseTransactionDTO> findAll() {
-        List<Transaction> data = transactionRepository.findAll();
+    public List<ResponseTransactionDTO> findAll(String token) {
+
+        String email = tokenService.validateToken(token);
+
+        User user = userRepository.findByEmail(email);
+
+        List<Transaction> data = transactionRepository.findAllByUserId(user.getId());
 
         List<ResponseTransactionDTO> dtos = data.stream().map(ResponseTransactionDTO::new).toList();
 

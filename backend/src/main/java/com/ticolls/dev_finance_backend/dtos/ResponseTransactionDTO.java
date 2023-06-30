@@ -13,6 +13,8 @@ public class ResponseTransactionDTO {
     @NotBlank
     private String date;
 
+    private Long userId;
+
     public ResponseTransactionDTO() {
     }
 
@@ -21,6 +23,15 @@ public class ResponseTransactionDTO {
         this.description = transaction.getDescription();
         this.amount = transaction.getAmount();
         this.date = transaction.getDate();
+        this.userId = transaction.getUser().getId();
+    }
+
+    public Long getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public Long getId() {

@@ -5,10 +5,10 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.ticolls.dev_finance_backend.entities.User;
 import com.ticolls.dev_finance_backend.repositories.UserRepository;
 
 import jakarta.servlet.FilterChain;
@@ -32,7 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         if (token != null) {
             String email = tokenService.validateToken(token);
-            UserDetails user = userRepository.findByEmail(email);
+            User user = userRepository.findByEmail(email);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
