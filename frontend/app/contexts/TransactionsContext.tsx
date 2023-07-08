@@ -5,10 +5,9 @@ import { ReactNode, createContext, useState } from "react";
 
 interface TransactionsContextProps {
     transactions: TransactionType[],
-    createTransaction(transaction: CreateTransactionType): Promise<void>,
-    loadTransactions(): Promise<void>,
-    removeTransaction(id: number): void,
+    setTransactions(value: TransactionType[]): void,
     load: boolean
+    setLoad(value: boolean): void,
 }
 
 interface TransactionsContextProviderProps {
@@ -22,11 +21,7 @@ export type TransactionType = {
     date: String
 }
 
-type CreateTransactionType = {
-    description: String,
-    amount: number,
-    date: String
-}
+
 
 
 export const TransactionsContext = createContext({} as TransactionsContextProps)
@@ -37,52 +32,11 @@ export function TransactionsContextProvider(props: TransactionsContextProviderPr
     const [load, setLoad] = useState<boolean>(false)
 
 
-    async function createTransaction(transaction: TransactionType) {
-        const res = await fetch('http://localhost:8080/transaction', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(transaction),
-        })
 
-        if (!res.ok) {
-            throw new Error("Erro na criação da transação")
-        }
-
-        setLoad(!load)
-
-    }
-
-    async function loadTransactions() {
-        const data = await fetch("http://localhost:8080/transaction", {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-
-        setTransactions(await data.json())
-    }
-
-    async function removeTransaction(id: number) {
-        const res = await fetch(`http://localhost:8080/transaction/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        })
-
-        if (!res.ok) {
-            throw new Error("Erro na deleção da transação " + id)
-        }
-
-        setLoad(!load)
-    }
 
     return (
 
-        <TransactionsContext.Provider value={{ transactions, loadTransactions, createTransaction, removeTransaction, load }}>
+        <TransactionsContext.Provider value={{ transactions, setTransactions, load, setLoad }}>
             {props.children}
         </TransactionsContext.Provider>
     )

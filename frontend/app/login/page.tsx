@@ -2,16 +2,23 @@
 
 import { FormEvent, useState } from "react"
 import "./login.css"
+import { useAuth } from "../hooks/useAuth";
 
 export default function Login() {
-    const [email, setEmail] = useState<String>("");
-    const [password, setPassword] = useState<String>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+
+    const { loginUser, setToken } = useAuth()
 
     async function submitForm(e: FormEvent) {
         e.preventDefault();
 
-        console.log(email);
-        console.log(password);
+        try {
+            const token = await loginUser({ email, password })
+            console.log(token)
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (

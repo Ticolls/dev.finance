@@ -1,9 +1,54 @@
 
 import { useContext } from "react";
-import { TransactionsContext } from "../contexts/TransactionsContext";
+import { TransactionsContext, TransactionType } from "../contexts/TransactionsContext";
+
 
 export function useTransactions() {
-    const value = useContext(TransactionsContext)
+    const { transactions, setTransactions, load, setLoad } = useContext(TransactionsContext)
 
-    return value
+    async function createTransaction(transaction: TransactionType) {
+        const res = await fetch('http://localhost:8080/transaction', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(transaction),
+        })
+
+        if (!res.ok) {
+            throw new Error("Erro na criação da transação")
+        }
+
+        setLoad(!load)
+
+    }
+
+    async function loadTransactions() {
+        const data = await fetch("http://localhost:8080/transaction", {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZXYuZmluYW5jZSBCYWNrRW5kIiwic3ViIjoidGVzdGVAaG90bWFpbC5jb20iLCJleHAiOjE2ODg3OTAxNTB9.gmQOJyWguhx-cY3PyN0DA97Mz3ySuFuDePpZevEc1rc'
+            }
+        })
+
+        setTransactions(await data.json())
+    }
+
+    async function removeTransaction(id: number) {
+        const res = await fetch(`http://localhost:8080/transaction/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+
+        if (!res.ok) {
+            throw new Error("Erro na deleção da transação " + id)
+        }
+
+        setLoad(!load)
+    }
+
+    return { transactions, load, createTransaction, loadTransactions, removeTransaction }
 }

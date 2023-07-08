@@ -2,26 +2,27 @@
 
 import { FormEvent, useState } from "react"
 import "./signin.css"
+import { useAuth } from "../hooks/useAuth";
+import { redirect } from "next/navigation";
 
 export default function Sigin() {
-    const [name, setName] = useState<String>("");
-    const [email, setEmail] = useState<String>("");
-    const [password, setPassword] = useState<String>("");
-    const [confirmPassword, setConfirmPassword] = useState<String>("");
+    const [name, setName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [confirmPassword, setConfirmPassword] = useState<string>("");
+
+    const { signinUser } = useAuth()
 
     async function submitForm(e: FormEvent) {
         e.preventDefault();
 
-        const res = await fetch("http://localhost:8080/user/signin", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({ name, email, password }),
-        });
-
-        console.log(await res.text())
+        try {
+            const res = await signinUser({ name, email, password })
+            console.log(res)
+            redirect("/login")
+        } catch (err) {
+            console.log(err)
+        }
 
     }
 
