@@ -1,5 +1,8 @@
+"use client"
+
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { cookies } from "next/dist/client/components/headers";
 
 
 type SigninUserType = {
@@ -14,44 +17,51 @@ type LoginUserType = {
 }
 
 export function useAuth() {
-    const { token, setToken } = useContext(AuthContext)
+    const { token, setToken } = useContext(AuthContext);
 
     async function signinUser(user: SigninUserType) {
         const res = await fetch("http://localhost:8080/auth/signin", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
             },
             body: JSON.stringify(user),
         });
 
         if (!res.ok) {
-            throw new Error("Erro no signin do usuário")
+            throw new Error("Erro no signin do usuário");
         }
 
-        return await res.json()
+        return res.status;
     }
 
     async function loginUser(user: LoginUserType) {
+
+        let authorized = false
+
         const res = await fetch("http://localhost:8080/auth/login", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
             },
             body: JSON.stringify(user),
         });
 
-        console.log(await res.json())
-
         if (!res.ok) {
-            throw new Error("Erro no login do usuário")
+            throw new Error("Erro no login do usuário");
         }
 
-        return await res.json()
+        const token = await res.text()
+
+        if (token.length > 0) {
+
+            sessionStorage.setItem("token", token)
+            authorized = true;
+        }
+
+        return authorized;
     }
 
 
-    return { token, setToken, signinUser, loginUser }
+    return { token, setToken, signinUser, loginUser };
 }

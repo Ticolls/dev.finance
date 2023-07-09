@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react"
 import "./signin.css"
 import { useAuth } from "../hooks/useAuth";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function Sigin() {
     const [name, setName] = useState<string>("");
@@ -13,15 +13,22 @@ export default function Sigin() {
 
     const { signinUser } = useAuth()
 
+    const router = useRouter();
+
     async function submitForm(e: FormEvent) {
         e.preventDefault();
 
+
         try {
-            const res = await signinUser({ name, email, password })
-            console.log(res)
-            redirect("/login")
+            const status = await signinUser({ name, email, password });
+            console.log(status);
+
+            if (status === 200) {
+                router.replace("/login");
+            }
         } catch (err) {
-            console.log(err)
+            console.log(err);
+
         }
 
     }

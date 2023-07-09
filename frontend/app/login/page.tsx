@@ -3,22 +3,32 @@
 import { FormEvent, useState } from "react"
 import "./login.css"
 import { useAuth } from "../hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
-    const { loginUser, setToken } = useAuth()
+    const { loginUser } = useAuth();
+
+    const router = useRouter();
 
     async function submitForm(e: FormEvent) {
         e.preventDefault();
 
         try {
-            const token = await loginUser({ email, password })
-            console.log(token)
+            const auth = await loginUser({ email, password });
+
+
+            console.log(auth)
+
+            if (auth) {
+                router.replace("/finances");
+            }
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
+
     }
 
     return (

@@ -27,7 +27,7 @@ public class UserController {
     private AuthService authService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> signin(@Valid @RequestBody SigninRequestDTO userDTO) {
+    public ResponseEntity<String> signin(@Valid @RequestBody SigninRequestDTO userDTO) {
         try {
             userService.save(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword());
             return ResponseEntity.ok("Usuário criado com sucesso!");
@@ -38,14 +38,10 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDTO userDTO) {
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO userDTO) {
 
-        try {
-            String token = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
-            return ResponseEntity.ok(new LoginResponseDTO(token));
-        } catch (Error e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
+        String token = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
+        return ResponseEntity.ok(new LoginResponseDTO(token));
 
     }
 }
