@@ -63,7 +63,7 @@
     box-shadow: none;
 }
 
-.button {
+.login-form .button {
     width: 100%;
     height: 2.5rem;
 
@@ -75,7 +75,7 @@
     border-radius: 0.5rem;
 }
 
-.button:hover {
+.login-form .button:hover {
     cursor: pointer;
     opacity: 0.9;
 }
