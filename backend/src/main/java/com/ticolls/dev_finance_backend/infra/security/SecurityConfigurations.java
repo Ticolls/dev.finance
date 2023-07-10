@@ -1,6 +1,5 @@
 package com.ticolls.dev_finance_backend.infra.security;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +33,8 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/signin").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/transaction").authenticated()
-                        .requestMatchers(HttpMethod.GET, "/transaction").authenticated())
+                        .requestMatchers(HttpMethod.GET, "/transaction").authenticated()
+                        .requestMatchers(HttpMethod.DELETE, "/transaction/**").authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

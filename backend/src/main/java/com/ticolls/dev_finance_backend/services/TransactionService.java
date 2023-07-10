@@ -53,7 +53,12 @@ public class TransactionService {
     }
 
     @Transactional
-    public void delete(long id) {
-        transactionRepository.deleteById(id);
+    public void delete(long id, String token) {
+
+        String email = tokenService.validateToken(token);
+
+        User user = userRepository.findByEmail(email);
+
+        transactionRepository.deleteByIdByUserId(id, user.getId());
     }
 }

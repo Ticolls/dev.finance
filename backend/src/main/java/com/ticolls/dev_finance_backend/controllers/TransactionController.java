@@ -52,9 +52,9 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@Positive @PathVariable long id) {
-        System.out.println(id);
-        transactionService.delete(id);
+    public String delete(@Positive @PathVariable long id, @RequestHeader(name = "Authorization") String token) {
+
+        transactionService.delete(id, token);
 
         return "ta batendo";
     }

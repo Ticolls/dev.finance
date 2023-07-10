@@ -2,8 +2,6 @@
 
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { cookies } from "next/dist/client/components/headers";
-
 
 type SigninUserType = {
     name: string,
@@ -51,11 +49,12 @@ export function useAuth() {
             throw new Error("Erro no login do usuário");
         }
 
-        const token = await res.text()
+        const data = await res.json();
+        const token = data.token;
 
         if (token.length > 0) {
-
-            sessionStorage.setItem("token", token)
+            console.log(token);
+            sessionStorage.setItem("token", token);
             authorized = true;
         }
 

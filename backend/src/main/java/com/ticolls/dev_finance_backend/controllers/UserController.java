@@ -41,6 +41,7 @@ public class UserController {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO userDTO) {
 
         String token = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
+
         return ResponseEntity.ok(new LoginResponseDTO(token));
 
     }
