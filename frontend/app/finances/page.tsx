@@ -1,44 +1,74 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { useEffect, useState } from 'react';
 import { Table } from '../components/table/Table';
-import './home.css'
+import './finances.css'
 import { useTransactions } from '../hooks/useTransactions';
+import { GetServerSideProps } from 'next';
+import { parseCookies } from "nookies"
 
-export default function Home() {
 
-  const { transactions, loadTransactions, load } = useTransactions()
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
-  const [income, setIncome] = useState<number>(0)
-  const [expense, setExpense] = useState<number>(0)
-  const [total, setTotal] = useState<number>(0)
+  console.log(ctx.req.cookies)
+
+  const cookies = parseCookies(ctx)
+  const token = cookies["token"]
+
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {}
+  }
+}
+
+export default function Finances() {
+
+  const { transactions, loadTransactions, load } = useTransactions();
+
+  const [income, setIncome] = useState<number>(0);
+  const [expense, setExpense] = useState<number>(0);
+  const [total, setTotal] = useState<number>(0);
 
   function handleCards() {
-    let income = 0.0, expense = 0.0, total = 0.0
+    let income = 0.0, expense = 0.0, total = 0.0;
 
     for (let transaction of transactions) {
-      total = total + transaction.amount
+      total = total + transaction.amount;
 
       if (transaction.amount >= 0) {
-        income = income + transaction.amount
+        income = income + transaction.amount;
       } else {
-        expense = expense + transaction.amount
+        expense = expense + transaction.amount;
       }
     }
 
-    setIncome(income)
-    setExpense(expense)
-    setTotal(total)
+    setIncome(income);
+    setExpense(expense);
+    setTotal(total);
 
   }
 
   useEffect(() => {
-    loadTransactions()
-  }, [load])
+    loadTransactions();
+  }, [load]);
 
   useEffect(() => {
-    handleCards()
-  }, [transactions.length])
+    handleCards();
+  }, [transactions.length]);
+
+
+
 
   return (
     <main className="container">
@@ -82,3 +112,5 @@ export default function Home() {
     </main>
   )
 }
+
+

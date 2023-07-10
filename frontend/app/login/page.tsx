@@ -19,14 +19,10 @@ export default function Login() {
         try {
             const auth = await loginUser({ email, password });
 
-
-            console.log(auth)
-
             if (auth) {
                 router.replace("/finances");
             }
         } catch (err) {
-            console.log(err);
         }
 
     }

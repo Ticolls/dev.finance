@@ -2,6 +2,7 @@
 
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
+import { setCookie } from 'nookies'
 
 type SigninUserType = {
     name: string,
@@ -53,8 +54,8 @@ export function useAuth() {
         const token = data.token;
 
         if (token.length > 0) {
-            console.log(token);
             sessionStorage.setItem("token", token);
+            setCookie(undefined, "token", token);
             authorized = true;
         }
 

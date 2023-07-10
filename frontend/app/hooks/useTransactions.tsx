@@ -2,12 +2,12 @@
 
 import { useContext } from "react";
 import { TransactionsContext, TransactionType } from "../contexts/TransactionsContext";
-
+import { parseCookies } from "nookies"
 
 export function useTransactions() {
     const { transactions, setTransactions, load, setLoad } = useContext(TransactionsContext)
 
-    const token = sessionStorage.getItem("token") || ""
+    const { token } = parseCookies()
 
     async function createTransaction(transaction: TransactionType) {
         const res = await fetch('http://localhost:8080/transaction', {

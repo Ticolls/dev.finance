@@ -21,14 +21,12 @@ export default function Sigin() {
 
         try {
             const status = await signinUser({ name, email, password });
-            console.log(status);
 
             if (status === 200) {
                 router.replace("/login");
             }
         } catch (err) {
             console.log(err);
-
         }
 
     }
