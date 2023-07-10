@@ -39,23 +39,40 @@ public class TransactionController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        transactionService.create(transactionDTO.getDescription(), transactionDTO.getAmount(), transactionDTO.getDate(),
-                token);
-        return ResponseEntity.ok("Transação criada");
+        try {
+            transactionService.create(transactionDTO.getDescription(), transactionDTO.getAmount(),
+                    transactionDTO.getDate(),
+                    token);
+            return ResponseEntity.ok("Transação criada com sucesso.");
+
+        } catch (Exception e) {
+            return new ResponseEntity<>("Erro na criação da transação.", null, HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @GetMapping
-    public List<ResponseTransactionDTO> findAll(@RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<List<ResponseTransactionDTO>> findAll(@RequestHeader(name = "Authorization") String token) {
 
-        List<ResponseTransactionDTO> result = transactionService.findAll(token);
-        return result;
+        try {
+            List<ResponseTransactionDTO> result = transactionService.findAll(token);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@Positive @PathVariable long id, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<String> delete(@Positive @PathVariable long id,
+            @RequestHeader(name = "Authorization") String token) {
 
-        transactionService.delete(id, token);
+        try {
+            transactionService.delete(id, token);
+            return ResponseEntity.ok("Transação " + id + "deletada com sucesso.");
+        } catch (Exception e) {
+            return new ResponseEntity<String>("Não foi possível deletar a transação " + id, null,
+                    HttpStatus.BAD_REQUEST);
+        }
 
-        return "ta batendo";
     }
 }
