@@ -3,34 +3,11 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { Table } from '../components/table/Table';
+import { Table } from '../../components/table/Table';
 import './finances.css'
-import { useTransactions } from '../hooks/useTransactions';
+import { useTransactions } from '../../hooks/useTransactions';
 import { GetServerSideProps } from 'next';
 import { parseCookies } from "nookies"
-
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-
-  console.log(ctx.req.cookies)
-
-  const cookies = parseCookies(ctx)
-  const token = cookies["token"]
-
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false
-      }
-    }
-  }
-
-  return {
-    props: {}
-  }
-}
 
 export default function Finances() {
 

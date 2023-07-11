@@ -1,4 +1,4 @@
-.login-container {
+.signin-container {
     width: 100%;
     display: flex;
     align-items: center;
@@ -6,21 +6,20 @@
 
     flex-direction: column;
 
-
     margin-top: -4rem;
 
-    padding: 1% 40%;
 }
 
-.login-container .login-title {
+.signin-container .signin-title {
     margin-bottom: 3rem;
     color: #fff;
     font-weight: 500;
 }
 
-.login-form {
+.signin-form {
 
-    width: 100%;
+    width: 25%;
+    min-width: 15rem;
     height: 100%;
 
     display: flex;
@@ -31,7 +30,7 @@
     gap: 1rem;
 }
 
-.login-form .input-group {
+.signin-form .input-group {
     width: 100%;
 
     display: flex;
@@ -40,12 +39,12 @@
     gap: 0.3rem;
 }
 
-.login-form .input-group label {
+.signin-form .input-group label {
     color: var(--dark-blue);
     font-weight: 500;
 }
 
-.login-form .input-group input {
+.signin-form .input-group input {
     width: 100%;
     height: 2.5rem;
 
@@ -57,13 +56,13 @@
     color: var(--dark-blue);
 }
 
-.login-form .input-group input:focus {
+.signin-form .input-group input:focus {
     border: none;
     outline: none;
     box-shadow: none;
 }
 
-.login-form .button {
+.signin-form .button {
     width: 100%;
     height: 2.5rem;
 
@@ -75,7 +74,7 @@
     border-radius: 0.5rem;
 }
 
-.login-form .button:hover {
+.signin-form .button:hover {
     cursor: pointer;
     opacity: 0.9;
 }
