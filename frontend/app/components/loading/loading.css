@@ -1,0 +1,19 @@
+.loading-box {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
