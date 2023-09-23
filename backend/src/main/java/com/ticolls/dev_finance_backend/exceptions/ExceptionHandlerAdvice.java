@@ -9,7 +9,11 @@ public class ExceptionHandlerAdvice {
 
     @ExceptionHandler(TransactionException.class)
     public ResponseEntity<?> handleTransactionException(TransactionException e) {
-        // log exception 
         return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
-    }         
+    }
+    
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<?> handleUserException(UserException e) {
+        return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+    }  
 }
