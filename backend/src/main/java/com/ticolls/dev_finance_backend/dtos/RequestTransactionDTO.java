@@ -9,15 +9,6 @@ public class RequestTransactionDTO {
 
     private Double amount;
     private String date;
-    private Long userId;
-
-    public Long getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
 
     public RequestTransactionDTO() {
     }

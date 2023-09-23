@@ -1,6 +1,7 @@
 package com.ticolls.dev_finance_backend.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.ticolls.dev_finance_backend.dtos.ResponseTransactionDTO;
 import com.ticolls.dev_finance_backend.entities.Transaction;
 import com.ticolls.dev_finance_backend.entities.User;
+import com.ticolls.dev_finance_backend.exceptions.ResourceException;
+import com.ticolls.dev_finance_backend.exceptions.TokenException;
 import com.ticolls.dev_finance_backend.infra.security.TokenService;
 import com.ticolls.dev_finance_backend.repositories.TransactionRepository;
 import com.ticolls.dev_finance_backend.repositories.UserRepository;
@@ -27,15 +30,17 @@ public class TransactionService {
     private TokenService tokenService;
 
     @Transactional
-    public void create(String description, Double amount, String date, String token) {
+    public ResponseTransactionDTO create(String description, Double amount, String date, String token) {
 
         String email = tokenService.validateToken(token);
-
         User user = userRepository.findByEmail(email);
 
         Transaction transaction = new Transaction(description, amount, date, user);
 
         transactionRepository.save(transaction);
+
+        ResponseTransactionDTO transactionDTO = new ResponseTransactionDTO(transaction);
+        return transactionDTO;
     }
 
     @Transactional
@@ -54,11 +59,17 @@ public class TransactionService {
 
     @Transactional
     public void delete(long id, String token) {
+        try {
+            tokenService.validateToken(token);
+        } catch (Error e) {
+            throw new TokenException(e.getMessage());
+        }
 
-        String email = tokenService.validateToken(token);
+        Optional<Transaction> transactionOp = transactionRepository.findById(id);
 
-        User user = userRepository.findByEmail(email);
+        transactionOp.orElseThrow(() -> new ResourceException("transação não encontrada."));
 
-        transactionRepository.deleteByIdByUserId(id, user.getId());
+        transactionRepository.deleteById(id);
+
     }
 }

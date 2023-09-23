@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ticolls.dev_finance_backend.dtos.RequestTransactionDTO;
 import com.ticolls.dev_finance_backend.dtos.ResponseTransactionDTO;
+import com.ticolls.dev_finance_backend.exceptions.ResourceException;
+import com.ticolls.dev_finance_backend.exceptions.TransactionException;
 import com.ticolls.dev_finance_backend.services.TransactionService;
 
 import jakarta.validation.Valid;
@@ -31,24 +33,21 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<String> create(@Valid @RequestBody RequestTransactionDTO transactionDTO,
+    public ResponseEntity<ResponseTransactionDTO> create(@Valid @RequestBody RequestTransactionDTO requestTransaction,
             @RequestHeader(name = "Authorization") String token) {
 
-        if (transactionDTO.getAmount() == 0) {
-            return new ResponseEntity<>("not valid due to validation error: valor deve ser diferente de 0",
-                    HttpStatus.BAD_REQUEST);
+        if (requestTransaction.getAmount() == 0) {
+            throw new TransactionException(HttpStatus.BAD_REQUEST, "valor da transação deve ser diferente de 0.");
         }
 
         try {
-            transactionService.create(transactionDTO.getDescription(), transactionDTO.getAmount(),
-                    transactionDTO.getDate(),
-                    token);
-            return ResponseEntity.ok("Transação criada com sucesso.");
+            ResponseTransactionDTO transactionDTO = transactionService.create(requestTransaction.getDescription(), requestTransaction.getAmount(),
+                    requestTransaction.getDate(), token);
+            return ResponseEntity.ok().body(transactionDTO);
 
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro na criação da transação.", null, HttpStatus.BAD_REQUEST);
+            throw new TransactionException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-
     }
 
     @GetMapping
@@ -56,9 +55,9 @@ public class TransactionController {
 
         try {
             List<ResponseTransactionDTO> result = transactionService.findAll(token);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok().body(result);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, null, HttpStatus.BAD_REQUEST);
+            throw new TransactionException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -68,11 +67,11 @@ public class TransactionController {
 
         try {
             transactionService.delete(id, token);
-            return ResponseEntity.ok("Transação " + id + "deletada com sucesso.");
-        } catch (Exception e) {
-            return new ResponseEntity<String>("Não foi possível deletar a transação " + id, null,
-                    HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok().body("Transação " + id + " deletada com sucesso.");
+        } catch (ResourceException e) {
+            throw new TransactionException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (Error e) {
+            throw new TransactionException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-
     }
 }
