@@ -16,13 +16,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerAdvice { 
 
     @ExceptionHandler(TransactionException.class)
-    public ResponseEntity<Object> handleTransactionException(TransactionException e) {
-        return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+    public ResponseEntity<ExceptionResponse> handleTransactionException(TransactionException e) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage());
+        return ResponseEntity.status(e.getHttpStatus()).body(exceptionResponse);
     }
     
     @ExceptionHandler(UserException.class)
-    public ResponseEntity<Object> handleUserException(UserException e) {
-        return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
+    public ResponseEntity<ExceptionResponse> handleUserException(UserException e) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(e.getMessage());
+        return ResponseEntity.status(e.getHttpStatus()).body(exceptionResponse);
     }
     
     @ExceptionHandler(MethodArgumentNotValidException.class)
