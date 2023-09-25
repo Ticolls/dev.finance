@@ -31,11 +31,8 @@ public class UserService implements UserDetailsService {
             User newUser = new User(name, email, encryptedPassword);
             repository.save(newUser);
         } catch (Error e) {
-            
-        }
-
-
-        
+            throw new Error(e.getMessage());
+        }  
     }
 
     @Override

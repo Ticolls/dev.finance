@@ -31,12 +31,13 @@ public class UserController {
     @PostMapping("/signin")
     public ResponseEntity<String> signin(@Valid @RequestBody SigninRequestDTO userDTO) {
 
-
         try {
             userService.save(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword());
             return ResponseEntity.ok().body("Usuário criado com sucesso!");
         } catch (EmailException e) {
             throw new UserException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (Exception e) {
+            throw new UserException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
 
     }
@@ -44,9 +45,12 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO userDTO) {
 
-        String token = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
+        try {
+            String token = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
+            return ResponseEntity.ok().body(new LoginResponseDTO(token));
+        } catch (Exception e) {
+            throw new UserException(HttpStatus.UNAUTHORIZED, "Email ou senha inválido.");
+        }
 
-        return ResponseEntity.ok().body(new LoginResponseDTO(token));
-        
     }
 }

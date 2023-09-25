@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerAdvice { 
 
     @ExceptionHandler(TransactionException.class)
-    public ResponseEntity<?> handleTransactionException(TransactionException e) {
+    public ResponseEntity<Object> handleTransactionException(TransactionException e) {
         return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
     }
     
     @ExceptionHandler(UserException.class)
-    public ResponseEntity<?> handleUserException(UserException e) {
+    public ResponseEntity<Object> handleUserException(UserException e) {
         return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
     }
     
