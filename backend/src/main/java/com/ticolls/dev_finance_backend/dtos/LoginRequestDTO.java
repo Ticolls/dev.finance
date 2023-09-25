@@ -1,8 +1,14 @@
 package com.ticolls.dev_finance_backend.dtos;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class LoginRequestDTO {
 
+    @Email(message = "Email inválido.")
     private String email;
+
+    @NotBlank(message = "A senhna é obrigatória.")
     private String password;
 
     public LoginRequestDTO() {

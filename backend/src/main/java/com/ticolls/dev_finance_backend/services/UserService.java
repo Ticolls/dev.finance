@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ticolls.dev_finance_backend.entities.User;
+import com.ticolls.dev_finance_backend.exceptions.EmailException;
 import com.ticolls.dev_finance_backend.repositories.UserRepository;
 
 import jakarta.transaction.Transactional;
@@ -22,15 +23,19 @@ public class UserService implements UserDetailsService {
     public void save(String name, String email, String password) {
 
         if (this.repository.findByEmail(email) != null) {
-            throw new Error("Email já cadastrado");
-        } else {
+            throw new EmailException("Email já cadastrado");
+        } 
 
+        try {
             String encryptedPassword = new BCryptPasswordEncoder().encode(password);
-
             User newUser = new User(name, email, encryptedPassword);
-
             repository.save(newUser);
+        } catch (Error e) {
+            
         }
+
+
+        
     }
 
     @Override

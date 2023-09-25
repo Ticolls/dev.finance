@@ -6,8 +6,9 @@ public class UserException extends RuntimeException {
 
     private HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
     
-    public UserException(String msg) {
+    public UserException(HttpStatus httpStatus, String msg) {
         super(msg);
+        this.httpStatus = httpStatus;
     }
 
     public HttpStatus getHttpStatus() {

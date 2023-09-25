@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public class RequestTransactionDTO {
 
-    @NotBlank
+@NotBlank(message = "A descrição é obrigatória.")
     private String description;
 
     private Double amount;

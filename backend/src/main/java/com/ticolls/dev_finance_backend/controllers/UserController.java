@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ticolls.dev_finance_backend.dtos.LoginRequestDTO;
 import com.ticolls.dev_finance_backend.dtos.LoginResponseDTO;
 import com.ticolls.dev_finance_backend.dtos.SigninRequestDTO;
+import com.ticolls.dev_finance_backend.exceptions.EmailException;
+import com.ticolls.dev_finance_backend.exceptions.UserException;
 import com.ticolls.dev_finance_backend.services.AuthService;
 import com.ticolls.dev_finance_backend.services.UserService;
 
@@ -28,17 +30,19 @@ public class UserController {
 
     @PostMapping("/signin")
     public ResponseEntity<String> signin(@Valid @RequestBody SigninRequestDTO userDTO) {
+
+
         try {
             userService.save(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword());
-            return ResponseEntity.ok("Usuário criado com sucesso!");
-        } catch (Error e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.ok().body("Usuário criado com sucesso!");
+        } catch (EmailException e) {
+            throw new UserException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
 
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO userDTO) {
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO userDTO) {
 
         String token = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
 

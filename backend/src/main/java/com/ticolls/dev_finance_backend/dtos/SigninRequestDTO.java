@@ -6,13 +6,14 @@ import jakarta.validation.constraints.Pattern;
 
 public class SigninRequestDTO {
 
-    @NotBlank
+    @NotBlank(message = "O nome é obrigatório.")
     private String name;
 
-    @Email
+    @Email(message = "Email inválido.")
     private String email;
 
-    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$")
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$", 
+    message = "A senha deve conter 8 caracteres, pelo menos uma letra minúscula e um número")
     private String password;
 
     public SigninRequestDTO() {
