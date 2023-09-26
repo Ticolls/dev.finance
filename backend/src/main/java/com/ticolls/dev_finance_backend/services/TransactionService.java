@@ -51,6 +51,7 @@ public class TransactionService {
         User user = userRepository.findByEmail(email);
 
         List<Transaction> data = transactionRepository.findAllByUserId(user.getId());
+        
 
         List<ResponseTransactionDTO> dtos = data.stream().map(ResponseTransactionDTO::new).toList();
 

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ticolls.dev_finance_backend.dtos.RequestTransactionDTO;
+import com.ticolls.dev_finance_backend.dtos.ResponseDTO;
 import com.ticolls.dev_finance_backend.dtos.ResponseTransactionDTO;
 import com.ticolls.dev_finance_backend.exceptions.ResourceException;
 import com.ticolls.dev_finance_backend.exceptions.TransactionException;
@@ -33,7 +34,7 @@ public class TransactionController {
     private TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<ResponseTransactionDTO> create(@Valid @RequestBody RequestTransactionDTO requestTransaction,
+    public ResponseEntity<ResponseDTO> create(@Valid @RequestBody RequestTransactionDTO requestTransaction,
             @CookieValue("token") String token) {
 
 
@@ -44,7 +45,10 @@ public class TransactionController {
         try {
             ResponseTransactionDTO transactionDTO = transactionService.create(requestTransaction.getDescription(), requestTransaction.getAmount(),
                     requestTransaction.getDate(), token);
-            return ResponseEntity.ok().body(transactionDTO);
+
+            ResponseDTO response = new ResponseDTO(true, "transação criada com sucesso.", transactionDTO);
+
+            return ResponseEntity.ok().body(response);
 
         } catch (Exception e) {
             throw new TransactionException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
@@ -52,23 +56,27 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ResponseTransactionDTO>> findAll(@CookieValue("token") String token) {
+    public ResponseEntity<ResponseDTO> findAll(@CookieValue("token") String token) {
 
         try {
-            List<ResponseTransactionDTO> result = transactionService.findAll(token);
-            return ResponseEntity.ok().body(result);
+            List<ResponseTransactionDTO> transactions = transactionService.findAll(token);
+
+            ResponseDTO responseDTO = new ResponseDTO(true, null, transactions);
+            return ResponseEntity.ok().body(responseDTO);
         } catch (Exception e) {
             throw new TransactionException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@Positive @PathVariable long id,
+    public ResponseEntity<ResponseDTO> delete(@Positive @PathVariable long id,
             @CookieValue("token") String token) {
 
         try {
             transactionService.delete(id, token);
-            return ResponseEntity.ok().body("Transação " + id + " deletada com sucesso.");
+
+            ResponseDTO responseDTO = new ResponseDTO(true, "Transação " + id + " deletada com sucesso.", null);
+            return ResponseEntity.ok().body(responseDTO);
         } catch (ResourceException e) {
             throw new TransactionException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (Error e) {

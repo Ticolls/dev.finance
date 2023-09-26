@@ -15,9 +15,6 @@ public class ResponseTransactionDTO {
 
     private Long userId;
 
-    public ResponseTransactionDTO() {
-    }
-
     public ResponseTransactionDTO(Transaction transaction) {
         this.id = transaction.getId();
         this.description = transaction.getDescription();

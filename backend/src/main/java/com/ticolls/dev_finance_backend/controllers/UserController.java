@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ticolls.dev_finance_backend.dtos.AuthResponseDTO;
 import com.ticolls.dev_finance_backend.dtos.LoginRequestDTO;
 import com.ticolls.dev_finance_backend.dtos.LoginResponseDTO;
+import com.ticolls.dev_finance_backend.dtos.ResponseDTO;
 import com.ticolls.dev_finance_backend.dtos.SignupRequestDTO;
 import com.ticolls.dev_finance_backend.exceptions.EmailException;
 import com.ticolls.dev_finance_backend.exceptions.UserException;
@@ -33,11 +34,13 @@ public class UserController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDTO userDTO) {
+    public ResponseEntity<ResponseDTO> signup(@Valid @RequestBody SignupRequestDTO userDTO) {
 
         try {
             userService.save(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword());
-            return ResponseEntity.ok().body("Usuário criado com sucesso!");
+
+            ResponseDTO responseDTO = new ResponseDTO(true, "Usuário criado com sucesso.", null);
+            return ResponseEntity.ok().body(responseDTO);
         } catch (EmailException e) {
             throw new UserException(HttpStatus.BAD_REQUEST, e.getMessage());
         } catch (Exception e) {
@@ -47,7 +50,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO userDTO, HttpServletResponse response) {
+    public ResponseEntity<ResponseDTO> login(@Valid @RequestBody LoginRequestDTO userDTO, HttpServletResponse response) {
 
         try {
             AuthResponseDTO authResponseDTO = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
@@ -63,7 +66,9 @@ public class UserController {
             cookie.setPath("/");
             response.addCookie(cookie);
 
-            return ResponseEntity.ok().body(loginResponseDTO);
+            ResponseDTO responseDTO = new ResponseDTO(true, "usuário logado com sucesso.", loginResponseDTO);
+
+            return ResponseEntity.ok().body(responseDTO);
 
         } catch (Exception e) {
             throw new UserException(HttpStatus.UNAUTHORIZED, "Email ou senha inválido.");
@@ -72,7 +77,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<String> logout(HttpServletResponse response) {
+    public ResponseEntity<ResponseDTO> logout(HttpServletResponse response) {
         Cookie cookie = new Cookie("token", null);
 
         cookie.setMaxAge(0);
@@ -80,6 +85,8 @@ public class UserController {
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return ResponseEntity.ok().body("sessão finalizada com sucesso.");
+        ResponseDTO responseDTO = new ResponseDTO(true, "sessão finalizada com sucesso.", null);
+
+        return ResponseEntity.ok().body(responseDTO);
     }
 }
