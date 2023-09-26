@@ -16,6 +16,8 @@ import com.ticolls.dev_finance_backend.exceptions.UserException;
 import com.ticolls.dev_finance_backend.services.AuthService;
 import com.ticolls.dev_finance_backend.services.UserService;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 @RestController
@@ -43,10 +45,21 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO userDTO) {
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO userDTO, HttpServletResponse response) {
 
         try {
             String token = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
+
+            Cookie cookie = new Cookie("token", token);
+
+            // expires in 1 day
+            cookie.setMaxAge( 24 * 60 * 60);
+
+            cookie.setHttpOnly(true);
+            cookie.setPath("/");
+
+            response.addCookie(cookie);
+
             return ResponseEntity.ok().body(new LoginResponseDTO(token));
         } catch (Exception e) {
             throw new UserException(HttpStatus.UNAUTHORIZED, "Email ou senha inválido.");

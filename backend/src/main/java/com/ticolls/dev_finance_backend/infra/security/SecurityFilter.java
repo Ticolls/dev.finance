@@ -13,6 +13,7 @@ import com.ticolls.dev_finance_backend.repositories.UserRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -26,29 +27,48 @@ public class SecurityFilter extends OncePerRequestFilter {
     UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-        String token = this.recoveyToken(request);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if (token != null) {
-            String email = tokenService.validateToken(token);
-            User user = userRepository.findByEmail(email);
+        String path = request.getServletPath();
 
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (path.equals("/auth/signin") || path.equals("/auth/login")) {
+            SecurityContextHolder.getContext().setAuthentication(null);
+            filterChain.doFilter(request, response);
+        } else {
+            Cookie[] cookies = request.getCookies();
+            String token = "";
+            
+
+            for (int i = 0; i < cookies.length; i++) {
+                if (cookies[i].getName().equals("token")) {
+                    token = cookies[i].getValue();
+                    break;
+                }
+            }
+            
+            token = this.recoveyToken(token);
+
+            if (token != null) {
+
+                String email = tokenService.validateToken(token);
+
+                User user = userRepository.findByEmail(email);
+
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+
+            filterChain.doFilter(request, response);
         }
-
-        filterChain.doFilter(request, response);
-
+        
     }
 
-    private String recoveyToken(HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
+    private String recoveyToken(String token) {
 
-        if (authHeader == null) {
+        if (token == null || token == "") {
             return null;
         }
 
-        return authHeader.replace("Bearer ", "");
+        return token.replace("Bearer ", "");
     }
 }
