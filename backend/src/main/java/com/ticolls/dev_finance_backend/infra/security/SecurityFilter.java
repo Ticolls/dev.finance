@@ -31,13 +31,15 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        if (path.equals("/auth/signup") || path.equals("/auth/login")) {
+        Cookie[] cookies = request.getCookies();
+
+
+        if (path.equals("/auth/signup") || path.equals("/auth/login") || cookies == null) {
             SecurityContextHolder.getContext().setAuthentication(null);
             filterChain.doFilter(request, response);
         } else {
-            Cookie[] cookies = request.getCookies();
+
             String token = "";
-            
 
             for (int i = 0; i < cookies.length; i++) {
                 if (cookies[i].getName().equals("token")) {

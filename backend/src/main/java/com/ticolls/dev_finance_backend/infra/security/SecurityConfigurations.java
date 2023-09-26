@@ -32,6 +32,7 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "auth/logout").authenticated()
                         .requestMatchers(HttpMethod.POST, "/transaction").authenticated()
                         .requestMatchers(HttpMethod.GET, "/transaction").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/transaction/**").authenticated())
