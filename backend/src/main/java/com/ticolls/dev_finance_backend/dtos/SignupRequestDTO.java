@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
-public class SigninRequestDTO {
+public class SignupRequestDTO {
 
     @NotBlank(message = "O nome é obrigatório.")
     private String name;
@@ -16,7 +16,7 @@ public class SigninRequestDTO {
     message = "A senha deve conter 8 caracteres, pelo menos uma letra minúscula e um número")
     private String password;
 
-    public SigninRequestDTO() {
+    public SignupRequestDTO() {
     }
 
     public String getEmail() {

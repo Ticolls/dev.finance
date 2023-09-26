@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ticolls.dev_finance_backend.dtos.AuthResponseDTO;
 import com.ticolls.dev_finance_backend.dtos.LoginRequestDTO;
 import com.ticolls.dev_finance_backend.dtos.LoginResponseDTO;
-import com.ticolls.dev_finance_backend.dtos.SigninRequestDTO;
+import com.ticolls.dev_finance_backend.dtos.SignupRequestDTO;
 import com.ticolls.dev_finance_backend.exceptions.EmailException;
 import com.ticolls.dev_finance_backend.exceptions.UserException;
 import com.ticolls.dev_finance_backend.services.AuthService;
@@ -31,8 +31,8 @@ public class UserController {
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/signin")
-    public ResponseEntity<String> signin(@Valid @RequestBody SigninRequestDTO userDTO) {
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequestDTO userDTO) {
 
         try {
             userService.save(userDTO.getName(), userDTO.getEmail(), userDTO.getPassword());

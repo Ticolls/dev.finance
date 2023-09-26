@@ -31,7 +31,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        if (path.equals("/auth/signin") || path.equals("/auth/login")) {
+        if (path.equals("/auth/signup") || path.equals("/auth/login")) {
             SecurityContextHolder.getContext().setAuthentication(null);
             filterChain.doFilter(request, response);
         } else {
