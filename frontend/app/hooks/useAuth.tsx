@@ -2,7 +2,6 @@
 
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { setCookie } from 'nookies'
 
 type SigninUserType = {
     name: string,
@@ -27,7 +26,9 @@ export function useAuth() {
             body: JSON.stringify(user),
         });
 
-        if (!res.ok) {
+        const json = await res.json();
+
+        if (!json.success) {
             throw new Error("Erro no signin do usuário");
         }
 
@@ -51,13 +52,6 @@ export function useAuth() {
         }
 
         const data = await res.json();
-        const token = data.token;
-
-        if (token.length > 0) {
-            sessionStorage.setItem("token", token);
-            setCookie(undefined, "token", token);
-            authorized = true;
-        }
 
         return authorized;
     }

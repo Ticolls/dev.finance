@@ -9,9 +9,11 @@ public class SignupRequestDTO {
     @NotBlank(message = "O nome é obrigatório.")
     private String name;
 
+    @NotBlank(message = "O email é obrigatório.")
     @Email(message = "Email inválido.")
     private String email;
 
+    @NotBlank(message = "A senha é obrigatória.")
     @Pattern(regexp = "(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$", 
     message = "A senha deve conter 8 caracteres, pelo menos uma letra minúscula e um número")
     private String password;
