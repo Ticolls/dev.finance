@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ticolls.dev_finance_backend.dtos.AuthResponseDTO;
 import com.ticolls.dev_finance_backend.dtos.LoginRequestDTO;
 import com.ticolls.dev_finance_backend.dtos.LoginResponseDTO;
 import com.ticolls.dev_finance_backend.dtos.SigninRequestDTO;
@@ -48,19 +49,21 @@ public class UserController {
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO userDTO, HttpServletResponse response) {
 
         try {
-            String token = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
+            AuthResponseDTO authResponseDTO = authService.authenticateUser(userDTO.getEmail(), userDTO.getPassword());
+
+            String token = authResponseDTO.getToken();
+            LoginResponseDTO loginResponseDTO = authResponseDTO.getLoginResponseDTO();
 
             Cookie cookie = new Cookie("token", token);
 
             // expires in 1 day
             cookie.setMaxAge( 24 * 60 * 60);
-
             cookie.setHttpOnly(true);
             cookie.setPath("/");
-
             response.addCookie(cookie);
 
-            return ResponseEntity.ok().body(new LoginResponseDTO(token));
+            return ResponseEntity.ok().body(loginResponseDTO);
+
         } catch (Exception e) {
             throw new UserException(HttpStatus.UNAUTHORIZED, "Email ou senha inválido.");
         }
