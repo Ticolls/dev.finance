@@ -1,7 +1,7 @@
 "use client"
 
 import { FormEvent, useState } from "react"
-import "./signin.css"
+import "./signup.css"
 import { useAuth } from "../../hooks/useAuth";
 import { useRouter } from "next/navigation";
 
@@ -16,7 +16,7 @@ type ErrorsType = {
     confirmPassword: { message: string } | null,
 }
 
-export default function Sigin() {
+export default function Signup() {
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
