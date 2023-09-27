@@ -2,55 +2,46 @@
 
 import { useContext } from "react";
 import { TransactionsContext, TransactionType } from "../contexts/TransactionsContext";
-import { parseCookies } from "nookies"
+import { api } from "../api";
+
+type ResponseDTO = {
+    success: boolean,
+    message: string,
+    data: any
+}
 
 export function useTransactions() {
     const { transactions, setTransactions, load, setLoad } = useContext(TransactionsContext)
 
-    const { token } = parseCookies()
-
     async function createTransaction(transaction: TransactionType) {
-        const res = await fetch('http://localhost:8080/transaction', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": token
-            },
-            body: JSON.stringify(transaction),
-        })
+        const res: ResponseDTO = (await api.post("/transaction", transaction, {withCredentials: true})).data;
 
-        if (!res.ok) {
-            throw new Error("Erro na criação da transação")
+        if (!res.success) {
+            throw new Error(res.message);
         }
 
-        setLoad(!load)
+        setLoad(!load);
 
     }
 
     async function loadTransactions() {
 
-        const data = await fetch("http://localhost:8080/transaction", {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": token
-            }
-        })
+        const res: ResponseDTO = (await api.get("/transaction", {withCredentials: true})).data;
 
-        setTransactions(await data.json())
+        if (!res.success) {
+            throw new Error(res.message);
+        }
+
+        const transaction = res.data;
+
+        setTransactions(transaction);
     }
 
     async function removeTransaction(id: number) {
-        const res = await fetch(`http://localhost:8080/transaction/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                "Authorization": token
-            }
-        })
+        const res: ResponseDTO = (await api.delete(`/transaction/${id}`, {withCredentials: true})).data;
 
-        if (!res.ok) {
-            throw new Error("Erro na deleção da transação " + id)
+        if (!res.success) {
+            throw new Error(res.message);
         }
 
         setLoad(!load)

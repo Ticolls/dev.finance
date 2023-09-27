@@ -62,6 +62,7 @@ public class UserController {
 
             // expires in 1 day
             cookie.setMaxAge( 24 * 60 * 60);
+            cookie.setSecure(true);
             cookie.setHttpOnly(true);
             cookie.setPath("/");
             response.addCookie(cookie);
@@ -81,7 +82,6 @@ public class UserController {
         Cookie cookie = new Cookie("token", null);
 
         cookie.setMaxAge(0);
-        cookie.setHttpOnly(true);
         cookie.setPath("/");
         response.addCookie(cookie);
 
