@@ -3,6 +3,7 @@
 import { useContext } from "react";
 import { TransactionsContext, TransactionType } from "../contexts/TransactionsContext";
 import { api } from "../api";
+import { CreateTransactionType } from "../models/transaction";
 
 type ResponseDTO = {
     success: boolean,
@@ -13,7 +14,7 @@ type ResponseDTO = {
 export function useTransactions() {
     const { transactions, setTransactions, load, setLoad } = useContext(TransactionsContext)
 
-    async function createTransaction(transaction: TransactionType) {
+    async function createTransaction(transaction: CreateTransactionType) {
         const res: ResponseDTO = (await api.post("/transaction", transaction, {withCredentials: true})).data;
 
         if (!res.success) {
@@ -32,9 +33,9 @@ export function useTransactions() {
             throw new Error(res.message);
         }
 
-        const transaction = res.data;
+        const transactions: TransactionType[] = res.data;
 
-        setTransactions(transaction);
+        setTransactions(transactions);
     }
 
     async function removeTransaction(id: number) {

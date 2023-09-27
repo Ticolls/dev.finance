@@ -61,6 +61,54 @@ h2 {
     color: white;
 }
 
+/*================== Table ======================*/
+
+.transaction {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-spacing: 0 0.5rem;
+    color: #969CB3;
+
+}
+
+table thead tr th:first-child {
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+table thead tr th:last-child {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+table thead th {
+    background: white;
+
+    font-weight: normal;
+    padding: 1rem 2rem;
+
+    text-align: left;
+}
+
+.button.new {
+    color: var(--green);
+    text-decoration: none;
+}
+
+.button.new:hover {
+    color: var(--light-green);
+    cursor: pointer;
+}
+
+.ancors {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
 /*================== Responsive ======================*/
 
 @media (min-width: 800px) {

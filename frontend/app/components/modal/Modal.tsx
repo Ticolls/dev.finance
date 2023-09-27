@@ -5,9 +5,12 @@ import './modal.css'
 import { FormEvent, useState } from 'react'
 import { useTransactions } from '@/app/hooks/useTransactions'
 
-export function Modal() {
+interface ModalProps {
+    setModalOpen(open: boolean): void
+}
 
-    const { setModalStatus } = useModal()
+export function Modal({ setModalOpen }: ModalProps) {
+
     const { createTransaction } = useTransactions()
 
     const [description, setDescription] = useState<String>("")
@@ -50,7 +53,7 @@ export function Modal() {
         if (verififyInput()) {
             try {
                 await createTransaction({ description, amount, date })
-                setModalStatus(false)
+                setModalOpen(false)
             }
             catch (e) {
                 console.error(e)
@@ -92,7 +95,7 @@ export function Modal() {
                         </div>
 
                         <div className="input-group actions">
-                            <a className="button cancel" onClick={() => setModalStatus(false)}>Cancelar</a>
+                            <a className="button cancel" onClick={() => setModalOpen(false)}>Cancelar</a>
                             <a className="save-button" onClick={handleSubmitForm}>Salvar</a>
                         </div>
                     </form>
