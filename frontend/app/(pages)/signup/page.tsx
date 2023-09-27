@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import { z } from "zod"
 import { Loading } from "@/app/components/loading/Loading";
+import Link from "next/link";
 
 
 type ErrorsType = {
@@ -118,6 +119,8 @@ export default function Signup() {
 
                 <button className="button" onClick={submitForm}>{loading ? <Loading /> : "Sign in"}</button>
             </form>
+
+            <p className="redirect">Já tem uma conta? clique <Link className="redirect-link" href="/login">aqui</Link> para fazer login.</p>
         </div>
     )
 }

@@ -8,6 +8,7 @@ import { redirect, useRouter } from "next/navigation";
 import { Loading } from "@/app/components/loading/Loading";
 
 import { z } from "zod"
+import Link from "next/link";
 
 type ErrorsType = {
     email: { message: string } | null,
@@ -39,12 +40,11 @@ export default function Login() {
             try {
                 setLoading(true);
                 const user = await loginUser({ email, password });
-                setLoading(false);
-
+                
                 if (user) {
                     router.replace("/finances");
                 }
-
+                setLoading(false);
             } catch (err) {
                 console.log(err);
                 setLoading(false);
@@ -87,6 +87,8 @@ export default function Login() {
 
                 <button className="button" onClick={submitForm}>{loading ? <Loading /> : "Login"}</button>
             </form>
+
+            <p className="redirect">Não tem uma conta? clique <Link href="/signup" className="redirect-link">aqui</Link> para criar uma.</p>
         </div>
     )
 }

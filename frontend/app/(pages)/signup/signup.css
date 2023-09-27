@@ -88,3 +88,15 @@
     cursor: pointer;
     opacity: 0.9;
 }
+
+.redirect {
+    margin-top: 20px;
+    color: var(--dark-blue);
+}
+
+.redirect .redirect-link {
+    text-decoration: none;
+
+    color: var(--light-green);
+    text-decoration: underline;
+}
