@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react"
 import "./login.css"
 import { useAuth } from "../../hooks/useAuth";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 import { Loading } from "@/app/components/loading/Loading";
 
@@ -38,13 +38,15 @@ export default function Login() {
         if (validationResponse.success) {
             try {
                 setLoading(true);
-                const auth = await loginUser({ email, password });
+                const user = await loginUser({ email, password });
                 setLoading(false);
 
-                if (auth) {
+                if (user) {
                     router.replace("/finances");
                 }
+
             } catch (err) {
+                console.log(err);
                 setLoading(false);
                 setErrors({ email: { message: "Usuário ou senha incorretos." }, password: null })
             }

@@ -35,12 +35,13 @@ export default function Signup() {
         name: z.string()
             .nonempty("Campo obrigatório."),
         password: z.string()
-            .nonempty("Campo obrigatório."),
+            .nonempty("Campo obrigatório.")
+            .regex(new RegExp("(?=.*[0-9])(?=.*[a-z])(?=\\S+$).{8,}$"), "A senha deve conter 8 caracteres, pelo menos uma letra minúscula e um número"),
         confirmPassword: z.string()
             .nonempty("Campo obrigatório.")
     })
         .refine(({ password, confirmPassword }) => password === confirmPassword, {
-            message: "as senhas não batem.",
+            message: "as senhas devem ser iguais.",
             path: ["confirmPassword"]
         });
 
@@ -52,13 +53,13 @@ export default function Signup() {
         if (validationResponse.success) {
             try {
                 setLoading(true);
-                const status = await signinUser({ name, email, password });
+                await signinUser({ name, email, password });
                 setLoading(false);
 
-                if (status === 200) {
-                    router.replace("/login");
-                }
+                router.replace("/login");
+
             } catch (err) {
+
                 setLoading(false);
                 setErrors({ name: null, email: { message: "Email já cadastrado." }, password: null, confirmPassword: null })
             }

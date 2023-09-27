@@ -6,8 +6,6 @@ import { useEffect, useState } from 'react';
 import { Table } from '../../components/table/Table';
 import './finances.css'
 import { useTransactions } from '../../hooks/useTransactions';
-import { GetServerSideProps } from 'next';
-import { parseCookies } from "nookies"
 
 export default function Finances() {
 
@@ -37,7 +35,11 @@ export default function Finances() {
   }
 
   useEffect(() => {
-    loadTransactions();
+    try {
+      loadTransactions();
+    } catch (err) {
+      console.log(err);
+    }
   }, [load]);
 
   useEffect(() => {
